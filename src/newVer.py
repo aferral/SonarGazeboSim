@@ -10,7 +10,7 @@ import os
 #define constants
 
 #All vars are in meters
-
+from gridUtils import rectangularize
 
 wallWidth = 0.4
 
@@ -147,10 +147,13 @@ def createSimGrid(msg):
 
 	print "New origin at ",(-minX + 5)," ",(-minY + 5)," IMAGE CORDS"
 	outOr = ((-minX + 5),(-minY + 5))
-	cv2.imwrite("out"+".png", canvas)
+
+	cv2.imwrite("outCanvas"+".png", canvas)
+
 
 	#Now export all this info to json for simulation
 
+	rectangularize(canvas)
 	encoded = base64.b64encode(open('out.png','rb').read())
 	
 	d = {}
