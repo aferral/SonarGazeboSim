@@ -6,12 +6,18 @@ from sensor_msgs.msg import LaserScan
 import rospy
 from newVer import createSimGrid
 import numpy as np
+import os
+import rospkg
 #todo cambiar topico por servicio get state
 
 
 
 class nodeSensorAdapter:
 	def __init__(self):
+		rospack = rospkg.RosPack()
+		a=rospack.get_path('beginner_tutorials')
+		os.chdir(os.path.join(a,'src'))
+		print os.getcwd()
 		rospy.init_node('getGeo_server')
 		s = rospy.Service('getGeo', getGeo, self.handle_add_two_ints)
 		#self.sub = rospy.Subscriber('gazebo/model_states', ModelStates, self.handlePose)

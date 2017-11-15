@@ -1,0 +1,44 @@
+Funcion en C
+
+recibe de entrada (imagen,json) el cual contiene
+
+
+Lo mejor seria armar un txt para parsear
+
+width,heidght,orgSourceX,orgSourceY,SensorX,SensorY;
+(cordX,cordY)..... [aca coloco cordenadas ocupadas al estilo
+de matriz sparse]
+
+
+;Fin archivo
+
+
+Salidas
+
+Idealmente una animacion de lo que sale. Pero en el peor caso
+solo necesito un plot de cada time step de la presion en el
+SensorX,SensorY
+
+Descubri que el cv2 funciona en C asi que estoy al otro lado
+puedo mostrar animacion facilito.
+
+Para usarlo compilar asi
+
+gcc model.c -o model.o -c -g;
+gcc parser.c -o parser.o -c -g;
+gcc main.c parser.o model.o -o out `pkg-config --libs --cflags opencv` -ldl -lm -g;
+
+
+Tenerlo funcionano luego leer papers, porque no entiendo papa
+de esto.
+
+
+----Falta comparar con el resultado del procesing
+
+gcc main.c -o opencv `pkg-config --libs --cflags opencv` -ldl -lm
+
+
+----Comparar reflexion  dx, la reflexion cuanod vuelve en MATLAB y en el otro
+
+
+

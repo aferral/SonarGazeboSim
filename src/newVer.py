@@ -6,6 +6,7 @@ from skimage.morphology import dilation
 import cv2
 import json
 import base64
+import os
 #define constants
 
 #All vars are in meters
@@ -22,8 +23,28 @@ pixelPerMeter = 0.2 #how many [meteres/pixel]
 
 
 pixelWallWidth = int(wallWidth / pixelPerMeter)
+simFolder = 'simuladorC'
 
 
+def outTxt(d,image):
+	with open(os.path.join(simFolder,"out.txt"),'w') as f:
+		f.write(str(d['gridSize'])+",")
+		f.write(str(d['org'][0])+",")
+		f.write(str(d['org'][1])+",")
+		f.write(str(d['sensor'][0])+",")
+		f.write(str(d['sensor'][1])+",")
+		temp = np.where(image)
+		f.write(str(len(temp[0])+1)+";")
+
+		cordXs = temp[0]
+		cordYs = temp[1]
+
+		cordsString = ""
+		for i in range(len(cordXs)):
+			cordsString += (str(cordXs[i])+","+str(cordYs[i])+";")
+		f.write(cordsString[0:-1])
+	
+	pass
 
 class recta:
 	def __init__(self,p0,p1):
@@ -72,6 +93,8 @@ def createSimGrid(msg):
 	yP = filter(lambda x: x[0] < maxRange, [(dist[i], yP[i]) for i in range(len(yP))])
 	xP = map(lambda x : x[1], xP)
 	yP = map(lambda x: x[1], yP)
+
+	
 
 	#Now maxRange is the max manhattan distancae between two points * 0.5
 	print "Old max range ",maxRange
@@ -123,6 +146,7 @@ def createSimGrid(msg):
 		elem.drawOnImage(canvas)
 
 	print "New origin at ",(-minX + 5)," ",(-minY + 5)," IMAGE CORDS"
+	outOr = ((-minX + 5),(-minY + 5))
 	cv2.imwrite("out"+".png", canvas)
 
 	#Now export all this info to json for simulation
@@ -131,12 +155,36 @@ def createSimGrid(msg):
 	
 	d = {}
 	d['image'] = encoded
-	d['org'] = nuevoOr
-	d['sensor'] = (nuevoOr[0] + 3 , nuevoOr[1])
+	d['org'] = outOr
+	d['sensor'] = (outOr[0] + 3 , outOr[1])
 	d['gridSize'] = gridCells
 	
 	with open('out.json','w') as f:
 		json.dump(d,f)
+	#Export to txt (requiered to use C simulation)
+	outTxt(d,canvas)
+
+	#Call the C program with show
+	import subprocess
+	import os
+	
+	st = './'+os.path.join(simFolder,'out')
+	print st
+	sleep = subprocess.Popen([st])
+	sleep.wait() #Wait it for end
+	print sleep.stdout  # sleep outputs nothing but...
+	rt= sleep.returncode  # you get the exit value
+	
+	if (rt == 0): #Plot sensor readings
+            with open(os.path.join(simFolder,'outSensor.txt'),'r') as f:
+		fullText = f.read()
+	    	ns = fullText.split()
+		vals = map(float,ns)
+		plt.plot(vals)
+		plt.savefig('senalSensor.png')
+	
+
+	
 		
 
 #show image
