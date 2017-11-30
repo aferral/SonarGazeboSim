@@ -13,7 +13,7 @@
   <xacro:property name="axel_offset" value="0.05" /> 
 
   <!-- Import all Gazebo-customization elements, including Gazebo colors -->
-  <xacro:include filename="$(find beginner_tutorials)/urdf/test.gazebo" />
+  <xacro:include filename="$(find sonar_sim)/urdf/test.gazebo" />
 
   <!-- Used for fixing robot to Gazebo 'base_link' -->
   <link name="world"/>
@@ -72,7 +72,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://beginner_tutorials/models/hokuyo.dae"/>
+        <mesh filename="package://sonar_sim/models/hokuyo.dae"/>
       </geometry>
     </visual>
 

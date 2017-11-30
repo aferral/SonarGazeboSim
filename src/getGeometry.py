@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from beginner_tutorials.srv import *
+from sonar_sim.srv import *
 from gazebo_msgs.msg import ModelStates
 from sensor_msgs.msg import LaserScan
 import rospy
@@ -15,7 +15,7 @@ import rospkg
 class nodeSensorAdapter:
 	def __init__(self):
 		rospack = rospkg.RosPack()
-		a=rospack.get_path('beginner_tutorials')
+		a=rospack.get_path('sonar_sim')
 		os.chdir(os.path.join(a,'src'))
 		print os.getcwd()
 		rospy.init_node('getGeo_server')
