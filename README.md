@@ -59,6 +59,8 @@ roslaunch src/SonarGazeboSim/launch/ej.launch
 Deberia abrirse un escenario con el simulador gazebo en el cual hay un pilar y 3 paredes. El pilar tiene un su parte superior el sensor laser.
 La idea es mover este pilar a la posicion deseada antes de llamar la captura de datos.
 
+![ejemplo.png]
+
 Ahora en otra ventana (volver a activar el workspace) y ejectar el nodo de obtencion de geometria. Este nodo espera una señal para realizar la captura del laser (que simula al sonar)
 
 ```

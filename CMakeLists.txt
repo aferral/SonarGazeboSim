@@ -57,7 +57,6 @@ message_generation
 ## Generate services in the 'srv' folder
 add_service_files(
    FILES
-   AddTwoInts.srv
    getGeo.srv
  )
 

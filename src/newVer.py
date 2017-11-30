@@ -7,6 +7,8 @@ import cv2
 import json
 import base64
 import os
+import subprocess
+import os
 #define constants
 
 #All vars are in meters
@@ -151,26 +153,23 @@ def createSimGrid(msg):
 	cv2.imwrite("outCanvas"+".png", canvas)
 
 
-	#Now export all this info to json for simulation
-
-	rectangularize(canvas)
+	#Now export all this info to json for simulation (MATLAB)
+	rectangularize(canvas,outOr)
 	encoded = base64.b64encode(open('out.png','rb').read())
-	
+
 	d = {}
 	d['image'] = encoded
 	d['org'] = outOr
 	d['sensor'] = (outOr[0] + 3 , outOr[1])
 	d['gridSize'] = gridCells
-	
+
 	with open('out.json','w') as f:
 		json.dump(d,f)
+
 	#Export to txt (requiered to use C simulation)
 	outTxt(d,canvas)
 
 	#Call the C program with show
-	import subprocess
-	import os
-	
 	st = './'+os.path.join(simFolder,'out')
 	print st
 	sleep = subprocess.Popen([st])
@@ -179,22 +178,10 @@ def createSimGrid(msg):
 	rt= sleep.returncode  # you get the exit value
 	
 	if (rt == 0): #Plot sensor readings
-            with open(os.path.join(simFolder,'outSensor.txt'),'r') as f:
-		fullText = f.read()
-	    	ns = fullText.split()
+		with open(os.path.join(simFolder,'outSensor.txt'),'r') as f:
+			fullText = f.read()
+		ns = fullText.split()
 		vals = map(float,ns)
 		plt.plot(vals)
 		plt.savefig('senalSensor.png')
 	
-
-	
-		
-
-#show image
-if __name__ == "__main__":
-	import pickle
-	with open('out.pkl','rb') as f:
-		msg = pickle.load(f)
-
-	createSimGrid(msg)
-	pass
