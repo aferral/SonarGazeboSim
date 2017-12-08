@@ -43,6 +43,23 @@ catkin_make
 ```
 cd SonarGazeboSim/src/simuladorC 
 make
+
+(OPCIONAL SI FALLA LO ANTERIOR utilizando CMakeLists.txt)
+
+mkdir build
+cd build
+cmake-gui .. # Esto va abrir una interfaz para configurar variables de entorno
+
+# Es necesario configurar solamente la variable OpenCV_DIR a la ubicacion de los cmake de open cv
+# Los archivos a buscar son la carpeta donde se encuentra OpenCVConfig.cmake OpenCVConfig-version.cmake
+# Normalmente esto es algun share
+# Despues de configurar presionar Generate y verificar que sea exitosa la generacion
+cmake .. # Esto compila el archivo MakeFile
+make   # Esto genera los binarios (deberia crearse un binario llamado out)
+mv out .. # Esto mueve out a la carpeta padre
+./out   # Esto deberia mostrar la simulacion en funcionamiento (verificar que este el archivo out.txt antes de ejecutar
+
+
 ```
 Si la compilacion fue exitosa todo deberia estar listo.
 
